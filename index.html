@@ -1,0 +1,99 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Mini shop</title>
+    <link rel="stylesheet" href="style.css" />
+    
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Mini<span>shop.</span></h1>
+      </div>
+      <div id="my-cart">
+        <img src="./assets/svgs/files-by-google-svgrepo-com.svg" alt="">
+        <p>my cart</p>
+        <div id="my-cart-number">0</div>
+      </div>
+    </header>
+    <main>
+      <section id="Collection-title">
+        <div>
+            <p>CURATED FOR YOU</p>
+            <h2>Shop The Collection</h2>          
+        </div>
+          <p>04 products</p>
+
+      </section>
+      <section id="products">
+        <!-- <section class="product">
+          <img src="./assets/imgs/headPhone-img.jpg" alt="Headphone" />
+          <p>AUDIO</p>
+          <h3>Wireless Headphone</h3>
+          <p>Rich Sound, all-day comfort</p>
+          <div>
+            <p>$50</p>
+            <button type="button">+Add to cart</button>
+          </div>
+        </section>
+        <section class="product">
+          <img src="./assets/imgs/mens-air-jordan-shoes.jpeg" alt="shoes" />
+          <p>FOOT WEAR</p>
+          <h3>Everyday Sneakers</h3>
+          <p>Fresh steps, effortless style</p>
+          <div>
+            <p>$80</p>
+            <button type="button">+Add to cart</button>
+          </div>
+        </section>
+        <section class="product">
+          <img src="./assets/imgs/watch-img.jpg" alt="watch" />
+          <p>ACCSESORIES</p>
+          <h3>Clasic Wriswatch</h3>
+          <p>Timeless Looks For Everyday</p>
+          <div>
+            <p>$120</p>
+            <button type="button">+Add to cart</button>
+          </div>
+        </section>
+        <section class="product">
+          <img src="./assets/imgs/bag-img.webp" alt="Backpack" />
+          <p>LIFESTYLE</p>
+          <h3>Urban Backpack</h3>
+          <p>Made For Wherever You Go</p>
+          <div>
+            <p>$35</p>
+            <button type="button">+Add to cart</button>
+          </div>
+        </section> -->
+      </section>
+      <section id="cart-box">
+        <div>
+            <p id="cart-box-uptitle">YOUR PICKS</p>
+            <div id="Shopping-cart-title">
+                <h2>Shopping Cart (<span id="cart-value-number">0</span>) </h2>
+                <button type="button" id="clear-all-btn">Clear All</button>
+            </div>
+        </div>
+        <div id="cart">
+            <div id="empty-state">
+                <img src="./assets/svgs/empty-cart-svgrepo-com.svg" alt="empty cart">
+                <p>Empty Shopping Cart</p>
+            </div>
+        </div>
+        <div id="sub-total">
+          <h3>Subtotal</h3>
+          <p id="sub-total-price"></p>
+        </div>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
