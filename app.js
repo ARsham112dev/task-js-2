@@ -1,161 +1,376 @@
+// Products Data
 const products = [
   {
     id: "brasb",
-    name: "Wireless Headphone",
+    pName: "Wireless Headphone",
     image: "./assets/imgs/headPhone-img.jpg",
     price: 50,
-    upTitle: "AUDIO",
+    topTitle: "AUDIO",
     subTitle: "Rich Sound, all-day comfort",
+    productCount: 0,
   },
   {
     id: "zkjyv",
-    name: "Everyday Sneakers",
+    pName: "Everyday Sneakers",
     image: "./assets/imgs/mens-air-jordan-shoes.jpeg",
     price: 80,
-    upTitle: "FOOT WEAR",
+    topTitle: "FOOT WEAR",
     subTitle: "Fresh steps, effortless style",
+    productCount: 0,
   },
   {
     id: "czcqw",
-    name: "Clasic Wriswatch",
+    pName: "Clasic Wriswatch",
     image: "./assets/imgs/watch-img.jpg",
     price: 120,
-    upTitle: "ACCSESORIES",
+    topTitle: "ACCSESORIES",
     subTitle: "Timeless Looks For Everyday",
+    productCount: 0,
   },
   {
     id: "qobuz",
-    name: "Urban Backpack",
+    pName: "Urban Backpack",
     image: "./assets/imgs/bag-img.webp",
     price: 35,
-    upTitle: "LIFESTYLE",
+    topTitle: "LIFESTYLE",
     subTitle: "Made For Wherever You Go",
+    productCount: 0,
   },
 ];
-let SubTotalPrice = [];
-let productInCartBtn;
+
+// Shopping Cart Variables
+const shoppingCart = [];
+let subTotalPrice = 0;
+let productInCartRemBtn;
 let addToCartBtn;
 let cartCount = 0;
+let productInCartDiv;
+let productInCartFooter;
+let allAddButtons;
+let allRemButtons;
+let allIncreaseBtns;
+let allDecreaseBtns;
+
+// DOM Elements
 const cart = document.getElementById("cart");
 const productsSec = document.getElementById("products");
-const cartValueNumber = document.getElementById("cart-value-number");
-const myCartNumber = document.getElementById("my-cart-number");
-const clearAllBtn = document.getElementById("clear-all-btn");
-const emptyState = document.getElementById("empty-state");
-const subTotal = document.getElementById("sub-total");
-const SubTotalPriceP = document.getElementById("sub-total-price");
+const cartValueCount = document.getElementById("cart-value-number");
+const myCartCartCount = document.getElementById("my-cart-number");
+const clearAllBtn = document.querySelector(".clear-all-btn");
+const emptyState = document.querySelector(".empty-state");
+const subTotal = document.querySelector(".sub-total");
+const wholeCartPrice = document.querySelector(".sub-total-price");
 
-const result = products.map((product) => {
+// Product Quantity Management
+function productCountIncrease(event) {
+  const productId = event.target.id;
+  const selectedProduct = products.find((p) => p.id === productId);
+  selectedProduct.productCount++;
+  document.getElementById(`${productId}-count`).textContent =
+    selectedProduct.productCount;
+}
+function getEventId(event) {
+  return event.target.id;
+}
+
+// Cart Item Management
+function addToShoppingCart(id) {
+  const item = products.find((P) => P.id === id);
+  shoppingCart.push(item);
+}
+
+// Cart Price Management
+function cartPriceIncreas(event) {
+  const productId = event.target.id;
+  const selectedProduct = products.find((p) => p.id === productId);
+  subTotalPrice += selectedProduct.price;
+  subTotal.classList.add("dis-flex");
+  wholeCartPrice.textContent = `$${subTotalPrice}`;
+}
+
+// Cart Counter Management
+function shoppingCountIncrease() {
+  cartCount++;
+  cart.classList.add("dir-column");
+  cartValueCount.textContent = cartCount;
+  myCartCartCount.textContent = cartCount;
+  clearAllBtn.classList.add("dis-block");
+  emptyState.classList.remove("dis-flex");
+  emptyState.classList.add("dis-none");
+  cart.classList.remove("dir-row");
+}
+
+// Cart Item Rendering
+function productNaming(event) {
+  const creatProductInCartName = document.createElement("p");
+  const productInCartName = productInCartDiv.appendChild(
+    creatProductInCartName,
+  );
+  const productId = event.target.id;
+  const selectedProduct = products.find((p) => p.id === productId);
+  productInCartName.textContent = selectedProduct.pName;
+  productInCartName.className = "product-in-cart-name";
+}
+function renderCartItemFooter() {
+  const creatProductInCartfooter = document.createElement("div");
+  productInCartFooter = productInCartDiv.appendChild(creatProductInCartfooter);
+  productInCartFooter.className = "creat-product-in-cart-price-rem-div";
+}
+function renderCartItemBox(event) {
+  const creatProductInCartDiv = document.createElement("div");
+  productInCartDiv = cart.appendChild(creatProductInCartDiv);
+  productInCartDiv.className = "product-in-cart";
+  const productId = event.target.id;
+  const selectedProduct = products.find((p) => p.id == productId);
+  productInCartDiv.id = selectedProduct.id;
+  return productInCartDiv;
+}
+function renderCartItemPrice(event) {
+  const creatProductInCartPrice = document.createElement("p");
+  const productInCartPrice = productInCartFooter.appendChild(
+    creatProductInCartPrice,
+  );
+  const productId = event.target.id;
+  const selectedProduct = products.find((p) => p.id === productId);
+  productInCartPrice.textContent = `$${selectedProduct.price}`;
+  productInCartPrice.className = "creat-product-in-cart-price";
+}
+function renderCartItemRem(event) {
+  const creatProductInCartRemBtn = document.createElement("button");
+  productInCartRemBtn = productInCartFooter.appendChild(
+    creatProductInCartRemBtn,
+  );
+  const productId = event.target.id;
+  const selectedProduct = products.find((p) => p.id === productId);
+  productInCartRemBtn.textContent = "Remove";
+  productInCartRemBtn.id = selectedProduct.id;
+  productInCartRemBtn.className = "product-in-cart-btn";
+}
+function renderCartItemCount(event) {
+  const creatCartItemCount = document.createElement("p");
+  const cartItemCount = productInCartFooter.appendChild(creatCartItemCount);
+  const productId = event.target.id;
+  const selectedProduct = shoppingCart.find((p) => p.id === productId);
+  cartItemCount.textContent = selectedProduct.productCount;
+  cartItemCount.id = `${productId}-cart-count`;
+}
+
+// Cart Counter Decrease
+function shoppingCountDecrease() {
+  cartCount--;
+  myCartCartCount.textContent = cartCount;
+  cartValueCount.textContent = cartCount;
+}
+
+// Cart Price Decrease
+function cartPriceIDecrease(event) {
+  const productId = event.target.id;
+  const selectedProduct = shoppingCart.find((p) => p.id === productId);
+  subTotalPrice -= selectedProduct.price * selectedProduct.productCount;
+  const index = shoppingCart.findIndex((p) => p.id === productId);
+  shoppingCart.splice(index, 1);
+  wholeCartPrice.textContent = `$${subTotalPrice}`;
+}
+
+// Remove Cart Item
+function cartItemRem(event) {
+  const productId = event.target.id;
+  const selectedProduct = products.find((p) => p.id === productId);
+  selectedProduct.productCount = 0;
+  const productInCartDiv = document.querySelector(
+    `.product-in-cart[id="${productId}"]`,
+  );
+  const addButton = document.querySelector(
+    `.add-to-cart-btn[id="${productId}"]`,
+  );
+  const productCard = addButton.closest(".product");
+  const quantityBox = productCard.querySelector(".quantity-box");
+  quantityBox.classList.remove("dis-flex");
+  quantityBox.classList.add("dis-none");
+  const button = document.querySelector(`.add-to-cart-btn[id=${productId}]`);
+  button.classList.remove("dis-none");
+  productInCartDiv.remove();
+}
+
+// Empty Cart State
+function emptyByRemBtn() {
+  clearAllBtn.classList.remove("dis-block");
+  clearAllBtn.classList.add("dis-none");
+  cart.classList.remove("dir-column");
+  cart.classList.add("dir-row");
+  emptyState.classList.remove("dis-none");
+  emptyState.classList.add("dis-flex");
+  subTotal.classList.remove("dis-flex");
+  subTotal.classList.add("dis-none");
+  wholeCartPrice.textContent = "$0";
+}
+
+// Clear All Cart Items
+function emptyCartByClearBtn() {
+  allAddButtons.forEach((button) => {
+    button.classList.remove("dis-none");
+    const productCard = button.closest(".product");
+    productCard.querySelector(".quantity-box").classList.remove("dis-flex");
+    productCard.querySelector(".quantity-box").classList.add("dis-none");
+    const selectedProduct = products.find((p) => p.id === button.id);
+    selectedProduct.productCount = 0;
+  });
+  document.querySelectorAll(".product-in-cart").forEach((item) => {
+    item.remove();
+  });
+  shoppingCart.length = 0;
+  subTotalPrice = 0;
+  cartCount = 0;
+  clearAllBtn.classList.remove("dis-block");
+  clearAllBtn.classList.add("dis-none");
+  cart.classList.remove("dir-column");
+  cart.classList.add("dir-row");
+  emptyState.classList.remove("dis-none");
+  emptyState.classList.add("dis-flex");
+  subTotal.classList.remove("dis-flex");
+  subTotal.classList.add("dis-none");
+  myCartCartCount.textContent = "0";
+  cartValueCount.textContent = "0";
+  wholeCartPrice.textContent = "$0";
+}
+
+// Render Product Cards
+products.map((product) => {
   const creatImg = document.createElement("img");
-  const creatProductSec = document.createElement("section");
-  const creatH3 = document.createElement("h3");
-  const creatP = document.createElement("p");
-  const creatFirstP = document.createElement("p");
-  const creatSecP = document.createElement("p");
-  const creatPriceP = document.createElement("p");
-  const creatDiv = document.createElement("div");
-  const creatBtn = document.createElement("button");
-  const productSec = productsSec.appendChild(creatProductSec);
-  productSec.className = "product";
-  const img = productSec.appendChild(creatImg);
+  const creatProductSection = document.createElement("section");
+  const creatProductCardName = document.createElement("h3");
+  const creattopTitle = document.createElement("p");
+  const creatSubTitle = document.createElement("p");
+  const creatPrice = document.createElement("p");
+  const creatProductFooter = document.createElement("div");
+  const creatAddToBtn = document.createElement("button");
+  const creatQuantityBox = document.createElement("div");
+  const creatQuantityIncrease = document.createElement("button");
+  const creatQuantityBoxValue = document.createElement("p");
+  const creatQuantityDecrease = document.createElement("button");
+  const productSection = productsSec.appendChild(creatProductSection);
+  productSection.className = "product";
+  const img = productSection.appendChild(creatImg);
   img.src = product.image;
   img.className = "product-img";
-  const firstP = productSec.appendChild(creatFirstP);
-  firstP.textContent = product.upTitle;
-  firstP.className = "product-upTitle";
-  const h3 = productSec.appendChild(creatH3);
-  h3.textContent = product.name;
-  const secP = productSec.appendChild(creatSecP);
-  secP.textContent = product.subTitle;
-  secP.className = "product-subTitle";
-  const priceDiv = productSec.appendChild(creatDiv);
-  priceDiv.className = "product-priceDiv";
-  const priceP = priceDiv.appendChild(creatPriceP);
-  priceP.textContent = `$${product.price}`;
-  priceP.className = "product-priceP";
-  addToCartBtn = priceDiv.appendChild(creatBtn);
+  const topTitle = productSection.appendChild(creattopTitle);
+  topTitle.textContent = product.topTitle;
+  topTitle.className = "product-topTitle";
+  const productCardName = productSection.appendChild(creatProductCardName);
+  productCardName.textContent = product.pName;
+  const subTitle = productSection.appendChild(creatSubTitle);
+  subTitle.textContent = product.subTitle;
+  subTitle.className = "product-subTitle";
+  const productFooter = productSection.appendChild(creatProductFooter);
+  productFooter.className = "product-footer";
+  const price = productFooter.appendChild(creatPrice);
+  price.textContent = `$${product.price}`;
+  price.className = "product-price";
+  addToCartBtn = productFooter.appendChild(creatAddToBtn);
   addToCartBtn.textContent = "+ Add to cart";
+  addToCartBtn.className = "add-to-cart-btn";
   addToCartBtn.id = product.id;
-  addToCartBtn.addEventListener("click", () => {
-    if (SubTotalPrice.includes(product.id)) return;
-    clearAllBtn.style.display = "block"
-    emptyState.style.display = "none";
-    const creatProductInCartDiv = document.createElement("div");
-    const creatProductInCartNameP = document.createElement("p");
-    const creatProductInCartPrice = document.createElement("p");
-    const creatProductInCartPriceRemDiv = document.createElement("div");
-    const creatProductInCartBtn = document.createElement("button");
-    const productInCartDiv = cart.appendChild(creatProductInCartDiv);
-    productInCartDiv.className = "product-in-cart";
-    if (cartCount < products.length) {
-      cartCount++;
-      cart.style.flexDirection = "column";
-      cartValueNumber.textContent = cartCount;
-      const productInCartName = productInCartDiv.appendChild(
-        creatProductInCartNameP,
-      );
-      productInCartName.textContent = product.name;
-      productInCartName.className = "product-in-cart-name";
-      const productInCartPriceRemDiv = productInCartDiv.appendChild(
-        creatProductInCartPriceRemDiv,
-      );
-      productInCartPriceRemDiv.className =
-        "creat-product-in-cart-price-rem-div";
-      const productInCartPrice = productInCartPriceRemDiv.appendChild(
-        creatProductInCartPrice,
-      );
-      productInCartPrice.textContent = `$${product.price}`;
-      productInCartPrice.className = "creat-product-in-cart-price";
-      const productInCartBtn = productInCartPriceRemDiv.appendChild(
-        creatProductInCartBtn,
-      );
-      productInCartBtn.textContent = "Remove";
-      productInCartBtn.className = "product-in-cart-btn";
-      myCartNumber.textContent = cartCount;
-      subTotal.style.display = "flex";
-      SubTotalPrice.push(product.id);
-      const sumSubtotalPrices = SubTotalPrice.reduce((sum, id) => {
-        return sum + products.find((p) => p.id === id).price;
-      }, 0);
-      SubTotalPriceP.textContent = `$${sumSubtotalPrices}`;
-      SubTotalPriceP.textContent = `$${sumSubtotalPrices}`;
+  const quantityBox = productFooter.appendChild(creatQuantityBox);
+  quantityBox.className = "quantity-box";
+  quantityBox.classList.add("dis-none");
+  const quantityIncrease = quantityBox.appendChild(creatQuantityIncrease);
+  quantityIncrease.className = "quantity-increase";
+  quantityIncrease.id = product.id;
+  quantityIncrease.textContent = "+";
+  const quantityBoxValue = quantityBox.appendChild(creatQuantityBoxValue);
+  quantityBoxValue.textContent = product.productCount;
+  quantityBoxValue.id = `${product.id}-count`;
+  const quantityDecrease = quantityBox.appendChild(creatQuantityDecrease);
+  quantityDecrease.id = product.id;
+  quantityDecrease.className = "quantity-decrease";
+  quantityDecrease.textContent = "-";
+});
 
-      productInCartBtn.addEventListener("click", () => {
-        SubTotalPrice = SubTotalPrice.filter((id) => id !== product.id);
+// Add to Cart Event Listener
+allAddButtons = document.querySelectorAll(".add-to-cart-btn");
+allAddButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    button.classList.add("dis-none");
+    const productCard = button.closest(".product");
+    const quantityBox = productCard.querySelector(".quantity-box");
+    quantityBox.classList.remove("dis-none");
+    quantityBox.classList.add("dis-flex");
+    shoppingCountIncrease();
+    const id = getEventId(event);
+    addToShoppingCart(id);
+    productCountIncrease(event);
+    renderCartItemBox(event);
+    productNaming(event);
+    renderCartItemFooter();
+    renderCartItemPrice(event);
+    renderCartItemRem(event);
+    renderCartItemCount(event);
+    cartPriceIncreas(event);
+  });
+});
 
-        const total = SubTotalPrice.reduce((sum, id) => {
-          return sum + products.find((p) => p.id === id).price;
-        }, 0);
-        SubTotalPriceP.textContent = `$${total}`;
-        productInCartDiv.remove();
-        cartCount--;
-        myCartNumber.textContent = cartCount;
-        cartValueNumber.textContent = cartCount;
+// Increase Quantity Event Listener
+allIncreaseBtns = document.querySelectorAll(".quantity-increase");
+allDecreaseBtns = document.querySelectorAll(".quantity-decrease");
+allIncreaseBtns.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    const productId = event.target.id;
+    const selectedProduct = products.find((p) => p.id === productId);
+    selectedProduct.productCount++;
+    document.getElementById(`${productId}-count`).textContent =
+      selectedProduct.productCount;
+    document.getElementById(`${productId}-cart-count`).textContent =
+      selectedProduct.productCount;
+    subTotalPrice += selectedProduct.price;
+    wholeCartPrice.textContent = `$${subTotalPrice}`;
+  });
+});
 
-        if (cartCount === 0) {
-          clearAllBtn.style.display = "none"
-          cart.style.flexDirection = "row";
-          emptyState.style.display = "flex";
-          subTotal.style.display = "none";
-        }
-      });
+// Decrease Quantity Event Listener
+allDecreaseBtns.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    const productId = event.target.id;
+    const selectedProduct = products.find((p) => p.id === productId);
+    if (selectedProduct.productCount > 0) {
+      selectedProduct.productCount--;
+      document.getElementById(`${productId}-count`).textContent =
+        selectedProduct.productCount;
+      document.getElementById(`${productId}-cart-count`).textContent =
+        selectedProduct.productCount;
+      subTotalPrice -= selectedProduct.price;
+      wholeCartPrice.textContent = `$${subTotalPrice}`;
+    }
+    if (selectedProduct.productCount === 0) {
+      shoppingCountDecrease();
+      const productCard = button.closest(".product");
+      productCard.querySelector(".quantity-box").classList.remove("dis-flex");
+      productCard.querySelector(".quantity-box").classList.add("dis-none");
+      productCard
+        .querySelector(".add-to-cart-btn")
+        .classList.remove("dis-none");
+      document.querySelector(`.product-in-cart[id="${productId}"]`).remove();
+      const index = shoppingCart.findIndex((p) => p.id === productId);
+      shoppingCart.splice(index, 1);
+    }
+    if (shoppingCart.length === 0) {
+      emptyByRemBtn();
     }
   });
 });
 
+// Remove Item Event Listener
+cart.addEventListener("click", (event) => {
+  if (event.target.classList.contains("product-in-cart-btn")) {
+    shoppingCountDecrease();
+    cartPriceIDecrease(event);
+    cartItemRem(event);
+    if (cartCount === 0) {
+      emptyByRemBtn();
+    }
+  }
+});
+
+// Clear All Event Listener
 clearAllBtn.addEventListener("click", () => {
-  document.querySelectorAll(".product-in-cart").forEach((item) => {
-    item.remove();
-  });
-  SubTotalPrice.splice(0, SubTotalPrice.length);
-  cartCount = 0;
-            clearAllBtn.style.display = "none"
-  SubTotalPriceP.textContent = "$0";
-  emptyState.style.display = "flex";
-  myCartNumber.textContent = cartCount;
-  cartValueNumber.textContent = cartCount;
-  cart.style.flexDirection = "row";
-  subTotal.style.display = "none";
-  n = 1;
-  n2 = 1;
+  emptyCartByClearBtn();
 });
