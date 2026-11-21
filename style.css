@@ -49,10 +49,12 @@ main{
     color: var(--tags);
     font-size: 9px;
     font-weight: bold;
+
 }
 #products{
     display: flex;
     gap: 20px;
+    justify-content: space-between;
 }
 .product{
     border-radius: 0.5rem;
