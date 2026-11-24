@@ -50,6 +50,7 @@ let allAddButtons;
 let allRemButtons;
 let allIncreaseBtns;
 let allDecreaseBtns;
+let isEmptyCart = true;
 
 // DOM Elements
 const cart = document.getElementById("cart");
@@ -77,6 +78,13 @@ function getEventId(event) {
 function addToShoppingCart(id) {
   const item = products.find((P) => P.id === id);
   shoppingCart.push(item);
+  if (isEmptyCart) {
+    clearAllBtn.classList.add("dis-block");
+    emptyState.classList.remove("dis-flex");
+    emptyState.classList.add("dis-none");
+    cart.classList.remove("dir-row");
+    isEmptyCart = false
+  }
 }
 
 // Cart Price Management
@@ -94,10 +102,6 @@ function shoppingCountIncrease() {
   cart.classList.add("dir-column");
   cartValueCount.textContent = cartCount;
   myCartCartCount.textContent = cartCount;
-  clearAllBtn.classList.add("dis-block");
-  emptyState.classList.remove("dis-flex");
-  emptyState.classList.add("dis-none");
-  cart.classList.remove("dir-row");
 }
 
 // Cart Item Rendering
@@ -194,6 +198,7 @@ function cartItemRem(event) {
 
 // Empty Cart State
 function emptyByRemBtn() {
+  isEmptyCart = true
   clearAllBtn.classList.remove("dis-block");
   clearAllBtn.classList.add("dis-none");
   cart.classList.remove("dir-column");
@@ -221,6 +226,7 @@ function emptyCartByClearBtn() {
   shoppingCart.length = 0;
   subTotalPrice = 0;
   cartCount = 0;
+  isEmptyCart = true
   clearAllBtn.classList.remove("dis-block");
   clearAllBtn.classList.add("dis-none");
   cart.classList.remove("dir-column");
@@ -261,6 +267,7 @@ function productCountZero(button, event) {
   const productId = event.target.id;
   const selectedProduct = products.find((p) => p.id === productId);
   if (selectedProduct.productCount === 0) {
+  isEmptyCart = true
     shoppingCountDecrease();
     const productCard = button.closest(".product");
     productCard.querySelector(".quantity-box").classList.remove("dis-flex");
