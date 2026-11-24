@@ -2,18 +2,10 @@
     --tags: rgb(185, 195, 185);
 }
 
-* {
-    box-sizing: border-box;
-}
-
-html {
-            width: 100%;
-    margin: 0;
-}
 
 body {
-        overflow-x: hidden;
-        width: 100%;
+    overflow-x: hidden;
+    width: 100%;
     margin: 0;
     background-color: #f7f6ea;
 }
