@@ -3,6 +3,7 @@
 }
 
 
+
 body {
     overflow-x: hidden;
     width: 100%;
@@ -389,7 +390,7 @@ p {
     }
 
     #cart-box {
-        width: 82%;
+        width: 90%;
     }
 
     #Collection-title {
@@ -401,6 +402,9 @@ p {
     }
 
     #cart-box-uptitle {
+        font-size: 13px;
+    }
+    .product-in-cart-name{
         font-size: 13px;
     }
 }
