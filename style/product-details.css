@@ -1,0 +1,154 @@
+:root {
+    --tags: rgb(133, 228, 133);
+    --text-btn: rgb(61, 233, 78);
+}
+
+* {
+    margin: 6px 0px;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    background-color: #e7e3e3;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 200px;
+    background-color: #f7f6ea;
+}
+
+header h1 {
+    font-size: 25px;
+}
+
+header h1 span {
+    color: #20730f;
+}
+
+#my-cart {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#my-cart p {
+    color: black;
+    font-weight: bold;
+}
+
+#my-cart img {
+    width: 20px;
+}
+
+#my-cart-number {
+    display: flex;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: green;
+    color: #ffff;
+
+}
+#product{
+    display: flex;
+    justify-content: flex-start;
+    gap: 25px;
+    margin-top: 20px;
+}
+#product-imgs{
+    display: flex;
+    gap: 10px;
+    flex-direction: row-reverse;
+}
+.gallery-image{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 6px;
+}
+.main-img{
+    width: 300px;
+    height: 300px;
+    border-radius: 1rem;
+}
+.thumbnail{
+    width: 65px;
+    height: 65px;
+    border-radius: 1rem;
+    padding: 3px;
+    background-color: #ffff;
+}
+.product-tag{
+    background-color: var(--tags);
+    width: fit-content;
+    padding: 4px 8px;
+    border-radius: 0.5rem;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-size: 13px;
+}
+.product-name{
+    letter-spacing: 1.5px;
+    font-size: 30px;
+}
+.product-price{
+    font-size: 35px;
+    color: var(--text-btn);
+    font-weight: bold;
+}
+.product-description{
+    width: 400px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.product-highlights-container{
+    display: flex;
+    gap: 35px;
+}
+.productShippingStatus{
+    font-size: 13px;
+    font-weight: bold;
+}
+.product-stock-status{
+    display: flex;
+    gap: 4px;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+.product-stock-vale{
+    color: var(--text-btn);
+    font-weight: bold;
+}
+.product-shipping-status{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 4px;
+    align-items: center;
+}
+.dis-none {
+    display: none;
+}
+
+.dis-block {
+    display: block;
+}
+
+.dis-flex {
+    display: flex;
+}
+
+.dir-column {
+    flex-direction: column;
+}
+
+.dir-row {
+    flex-direction: row;
+}
