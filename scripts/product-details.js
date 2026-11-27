@@ -1,25 +1,42 @@
-import { selectedProduct } from "../scripts/modules/selected-product.js";
-import { cartCount } from "../scripts/modules/selected-product.js";
+import { products } from "./modules/products.js";
+
+let selectedProduct = JSON.parse(localStorage.getItem("selectedProduct"));
+let shoppingCart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+let cartCount = Number(localStorage.getItem("cartCount")) || 0;
 // add to cart btn replace with Quantity box
 function addToCartHiding() {
   productAddToCartBtn.classList.add("dis-none");
   productQuantityBox.classList.remove("dis-none");
   productQuantityBox.classList.add("dis-flex");
+  productQuantityValue.textContent = selectedProduct.productCount;
+}
+function renderTab(tab) {
+
+  if (tab === "DescriptionTab") {
+    tabContent.textContent = selectedProduct.tabContent;
+  } else if (tab === "reviewsTab") {
+    tabContent.textContent =
+      "sorry sir, the costumers have not told their experience";
+  } else if (tab === "specificationsTab") {
+    tabContent.textContent = selectedProduct.specifications;
+  }
 }
 // shopping Count Increase
-function cartCountIncrease() {
-  cartCount++;
-  myCartCartCount.textContent = cartCount;
-}
 // DOM
-const myCartCartCount = document.getElementById("my-cart-number");
+const myHeaderCartCount = document.getElementById("my-cart-number");
 const productSection = document.getElementById("product");
 const productImgs = document.getElementById("product-imgs");
 const productDetails = document.getElementById("product-details");
-const tabsContainer = document.querySelector("tabs");
-const overviewTab = document.getElementById("overview-tab");
+const tabsContainer = document.querySelector(".tabs");
+const DescriptionTab = document.getElementById("Description-tab");
 const reviewsTab = document.getElementById("reviews-tab");
 const specificationsTab = document.getElementById("specifications-tab");
+const tabContent = document.getElementById("tab-content");
+if (cartCount === 0) {
+  myHeaderCartCount.textContent = 0;
+} else {
+  myHeaderCartCount.textContent = cartCount;
+}
 // creating Product Imgs Elements
 const creatMainImgContainer = document.createElement("section");
 const creatMainImg = document.createElement("img");
@@ -29,30 +46,34 @@ const creatThumbnail2 = document.createElement("img");
 const creatThumbnail3 = document.createElement("img");
 const creatThumbnail4 = document.createElement("img");
 
-const mainImgContainer = productImgs.appendChild(creatMainImgContainer)
-mainImgContainer.className = "main-img-container"
-const mainImg = mainImgContainer.appendChild(creatMainImg)
-mainImg.className = "main-img"
-mainImg.src = selectedProduct.image
-mainImg.alt = "Main Image"
-const galleryImage = productImgs.appendChild(creatGalleryImage)
-galleryImage.className = "gallery-image"
-const thumbnail1 = galleryImage.appendChild(creatThumbnail1)
+const params = new URLSearchParams(window.location.search)
+const currentTab = params.get("tab") || "DescriptionTab";
+renderTab(currentTab);
+
+const mainImgContainer = productImgs.appendChild(creatMainImgContainer);
+mainImgContainer.className = "main-img-container";
+const mainImg = mainImgContainer.appendChild(creatMainImg);
+mainImg.className = "main-img";
+mainImg.src = selectedProduct.image;
+mainImg.alt = "Main Image";
+const galleryImage = productImgs.appendChild(creatGalleryImage);
+galleryImage.className = "gallery-image";
+const thumbnail1 = galleryImage.appendChild(creatThumbnail1);
 thumbnail1.className = "thumbnail";
-thumbnail1.src = selectedProduct.image
-thumbnail1.alt = "thumbnail 1"
-const thumbnail2 = galleryImage.appendChild(creatThumbnail2)
+thumbnail1.src = selectedProduct.image;
+thumbnail1.alt = "thumbnail 1";
+const thumbnail2 = galleryImage.appendChild(creatThumbnail2);
 thumbnail2.className = "thumbnail";
-thumbnail2.src = selectedProduct.img2
-thumbnail2.alt = "thumbnail 2"
-const thumbnail3 = galleryImage.appendChild(creatThumbnail3)
+thumbnail2.src = selectedProduct.img2;
+thumbnail2.alt = "thumbnail 2";
+const thumbnail3 = galleryImage.appendChild(creatThumbnail3);
 thumbnail3.className = "thumbnail";
-thumbnail3.src = selectedProduct.img3
-thumbnail3.alt = "thumbnail 3"
-const thumbnail4 = galleryImage.appendChild(creatThumbnail4)
+thumbnail3.src = selectedProduct.img3;
+thumbnail3.alt = "thumbnail 3";
+const thumbnail4 = galleryImage.appendChild(creatThumbnail4);
 thumbnail4.className = "thumbnail";
-thumbnail4.src = selectedProduct.img4
-thumbnail4.alt = "thumbnail 4"
+thumbnail4.src = selectedProduct.img4;
+thumbnail4.alt = "thumbnail 4";
 // creating Product Details Elements
 const creatProductTitle = document.createElement("div");
 const creatProductTag = document.createElement("div");
@@ -154,13 +175,60 @@ productQuantityDecreaseBtn.className = "product-quantity-decreasebtn";
 productQuantityDecreaseBtn.id = selectedProduct.id;
 
 // Add to Cart Event Listener
-
 if (selectedProduct.productCount > 0) {
   addToCartHiding();
 } else {
+  // Add to Cart Event Listener
   productAddToCartBtn.addEventListener("click", () => {
+    selectedProduct.productCount++;
+    localStorage.setItem("selectedProduct", JSON.stringify(selectedProduct));
+    const shoppingProduct = products.find((p) => p.id === selectedProduct.id);
+    if (shoppingProduct) {
+      shoppingProduct.productCount++;
+      shoppingCart.push(shoppingProduct);
+      localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+    }
+    cartCount++;
+    localStorage.setItem("cartCount", cartCount);
+    myHeaderCartCount.textContent = cartCount;
     addToCartHiding();
-    cartCountIncrease();
   });
 }
 
+DescriptionTab.addEventListener("click", () => {
+  tabContent.textContent = selectedProduct.tabContent;
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get("tab");
+  if (tab === "DescriptionTab") return;
+  else {
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", "DescriptionTab");
+    window.history.pushState({}, "", url);
+  }
+});
+reviewsTab.addEventListener("click", () => {
+  tabContent.textContent =
+    "sorry sir, the costumers have not told their experience";
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get("tab");
+  if (tab === "reviewsTab") return;
+  else {
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", "reviewsTab");
+    window.history.pushState({}, "", url);
+  }
+});
+
+specificationsTab.addEventListener("click", () => {
+  console.log(selectedProduct.specifications);
+  console.log(tabContent);
+  tabContent.textContent = selectedProduct.specifications;
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get("tab");
+  if (tab === "specificationsTab") return;
+  else {
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", "specificationsTab");
+    window.history.pushState({}, "", url);
+  }
+});
