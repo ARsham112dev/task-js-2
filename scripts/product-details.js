@@ -3,6 +3,7 @@ import { products } from "./modules/products.js";
 let selectedProduct = JSON.parse(localStorage.getItem("selectedProduct"));
 let shoppingCart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
 let cartCount = Number(localStorage.getItem("cartCount")) || 0;
+let allThumbnails;
 // add to cart btn replace with Quantity box
 function addToCartHiding() {
   productAddToCartBtn.classList.add("dis-none");
@@ -10,8 +11,8 @@ function addToCartHiding() {
   productQuantityBox.classList.add("dis-flex");
   productQuantityValue.textContent = selectedProduct.productCount;
 }
+// checking selectedTab
 function renderTab(tab) {
-
   if (tab === "DescriptionTab") {
     tabContent.textContent = selectedProduct.tabContent;
   } else if (tab === "reviewsTab") {
@@ -21,6 +22,7 @@ function renderTab(tab) {
     tabContent.textContent = selectedProduct.specifications;
   }
 }
+
 // shopping Count Increase
 // DOM
 const myHeaderCartCount = document.getElementById("my-cart-number");
@@ -32,6 +34,7 @@ const DescriptionTab = document.getElementById("Description-tab");
 const reviewsTab = document.getElementById("reviews-tab");
 const specificationsTab = document.getElementById("specifications-tab");
 const tabContent = document.getElementById("tab-content");
+// checking cartCount
 if (cartCount === 0) {
   myHeaderCartCount.textContent = 0;
 } else {
@@ -46,10 +49,12 @@ const creatThumbnail2 = document.createElement("img");
 const creatThumbnail3 = document.createElement("img");
 const creatThumbnail4 = document.createElement("img");
 
-const params = new URLSearchParams(window.location.search)
+// changing the Tab
+const params = new URLSearchParams(window.location.search);
 const currentTab = params.get("tab") || "DescriptionTab";
 renderTab(currentTab);
 
+// Gallery rendering
 const mainImgContainer = productImgs.appendChild(creatMainImgContainer);
 mainImgContainer.className = "main-img-container";
 const mainImg = mainImgContainer.appendChild(creatMainImg);
@@ -231,4 +236,19 @@ specificationsTab.addEventListener("click", () => {
     url.searchParams.set("tab", "specificationsTab");
     window.history.pushState({}, "", url);
   }
+});
+function thumbnailChanging(thumbnail) {
+    thumbnail.addEventListener("click", () => {
+      allThumbnails.forEach((item) => {
+        item.classList.remove("activated-thumbnail");
+      });
+      mainImg.src = thumbnail.src;
+      thumbnail.classList.add("activated-thumbnail");
+    });
+}
+allThumbnails = document.querySelectorAll(".thumbnail");
+const defaultThumbnail = [...allThumbnails].find((img) => img.src === mainImg.src)
+defaultThumbnail.classList.add("activated-thumbnail")
+allThumbnails.forEach((thumbnail) => {
+  thumbnailChanging(thumbnail);
 });

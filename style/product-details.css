@@ -257,7 +257,8 @@ header h1 span {
     color: var(--tags);
     cursor: pointer;
 }
-#tab-content{
+
+#tab-content {
     margin-top: 15px;
     width: 40%;
     font-size: 14px;
@@ -283,4 +284,9 @@ header h1 span {
 
 .dir-row {
     flex-direction: row;
+}
+
+.activated-thumbnail {
+    transform: scale(1.1);
+    border: solid 3px var(--text-btn);
 }

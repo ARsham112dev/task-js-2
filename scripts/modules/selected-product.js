@@ -1,1 +1,0 @@
-let selectedProduct = JSON.parse(localStorage.getItem("selectedProduct"))
